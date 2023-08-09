@@ -1,4 +1,4 @@
-# UltraSync Integration for Home Assistant
+# UltraSync Integration for Home Assistant (using milliseconds for update frequency)
 
 [![Paypal](https://img.shields.io/badge/paypal-donate-green.svg)](https://paypal.me/lead2gold)
 [![Follow](https://img.shields.io/twitter/follow/l2gnux)](https://twitter.com/l2gnux/)<br>
