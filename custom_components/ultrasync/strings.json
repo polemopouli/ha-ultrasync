@@ -24,7 +24,7 @@
     "step": {
       "init": {
         "data": {
-          "scan_interval": "Update frequency (seconds)"
+          "scan_interval": "Update frequency (milliseconds)"
         }
       }
     }

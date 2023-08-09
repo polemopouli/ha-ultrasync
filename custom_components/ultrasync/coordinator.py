@@ -31,7 +31,7 @@ class UltraSyncDataUpdateCoordinator(DataUpdateCoordinator):
         self._area_delta = {}
         self._zone_delta = {}
 
-        update_interval = timedelta(seconds=options[CONF_SCAN_INTERVAL])
+        update_interval = timedelta(milliseconds=options[CONF_SCAN_INTERVAL])
 
         super().__init__(
             hass,
