@@ -22,16 +22,16 @@ You can only be logged into the ComNav/ZeroWire hub with the same user *once*; a
 ### From HACS
 
 1. Install HACS if you haven't already (see [installation guide](https://hacs.netlify.com/docs/installation/manual)).
-1. Find and install **UltraSync Beta** integration in HACS's "Integrations" tab.
+1. Find and install **UltraSync** integration in HACS's "Integrations" tab.
 1. Restart your Home Assistant.
-1. Add "UltraSync Beta" integration in Home Assistant's "**Configuration** -> **Integrations** tab.
+1. Add "UltraSync" integration in Home Assistant's "**Configuration** -> **Integrations** tab.
 
 ### Manual
 
 1. Download and unzip the [repo archive](https://github.com/caronc/ha-ultrasync/archive/master.zip). (You could also click "Download ZIP" after pressing the green button in the repo, alternatively, you could clone the repo from SSH add-on).
 2. Copy contents of the archive/repo into your `/config` directory.
 3. Restart your Home Assistant.
-4. Add "UltraSync Beta" integration in Home Assistant's "**Configuration** -> **Integrations** tab.
+4. Add "UltraSync" integration in Home Assistant's "**Configuration** -> **Integrations** tab.
 
 ## Configuration
 
@@ -55,9 +55,17 @@ Zone sensors work the same way and only load what is detected:
 - `ultrasync_zone2state`: The Zone 2 State
 - `ultrasync_zoneXstate`: The Zone X State
 
-The attributes read from the hub are associated with each Detected Zone and Area; so you can rename them to something more appropriate if you feel the need.
+Output sensors also work the same way and only load what is detected:
 
-There are several states each sensor can be at, but usually they will be one of the following: `Unknown`, `Ready`, `Not Ready`, `Armed Stay`, and `Armed Away`.  The `Unknown` state is assigned to sensors that are not reporting; they usually sit in the spots of the Area's you're not monitoring.
+- `ultrasync_output1state`: The Output 1 State
+- `ultrasync_output2state`: The Output 2 State
+- `ultrasync_outputXstate`: The Output X State
+
+The attributes read from the hub are associated with each Detected Zone, Area and Output; so you can rename them to something more appropriate if you feel the need.
+
+There are several states each Zone and Area sensor can be at, but usually they will be one of the following: `Unknown`, `Ready`, `Not Ready`, `Armed Stay`, and `Armed Away`.  The `Unknown` state is assigned to sensors that are not reporting; they usually sit in the spots of the Area's you're not monitoring.
+
+The state of Output sensors will ALWAYS remain `0` whether it has been turned on or off. This is normal, the Output sensor simply acts as an entity to activate the `switch` service.
 
 ### Event Automation
 
@@ -91,6 +99,8 @@ Available services:
 - `stay`: Set alarm scene to Stay Mode
 - `away`: Set alarm scene to Away Mode (fully activate Alarm)
 - `disarm`: Disarm the alarm
+- `bypass`: Bypasses a specified Zone
+- `switch`: Activates an Output Control entity
 
 As an example you may want to `arm` your alarm in `stay` mode each night and disarm it in the morning like so:
 
@@ -111,6 +121,29 @@ As an example you may want to `arm` your alarm in `stay` mode each night and dis
   action:
     service: ultrasync.disarm
 ```
+To activate the `bypass` service, simply specify the Zone entity number and call the service like so:
+
+``` yaml
+# Bypasses Zone 1
+- alias: Bypass Sliding Door
+  action:
+    service: ultrasync.bypass
+    data:
+      zone: 1
+```
+
+To activate the `switch` service, simply specify the Output entity number along with the desired state for the Output (0 for off, 1 for on) like so:
+
+``` yaml
+# Activates Output 1 to the on position
+- alias: Open Garage Door relay
+  action:
+    service: ultrasync.switch
+    data:
+      output: 1
+      state: 1
+```
+
 
 ## UI
 
